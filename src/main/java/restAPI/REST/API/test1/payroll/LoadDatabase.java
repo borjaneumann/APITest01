@@ -17,6 +17,7 @@ class LoadDatabase {
         return args -> {
             log.info("Preloading " + repository.save(new Employee("John Smith", "Cheerleader")));
             log.info("Preloading " + repository.save(new Employee("Jan Smit", "mid-fielder")));
+            log.info("Preloading " + repository.save(new Employee("Andoni Zubizarreta", "Goaly")));
         };
     }
 }

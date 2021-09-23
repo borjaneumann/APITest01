@@ -1,7 +1,11 @@
 package restAPI.REST.API.test1.payroll;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
 
+import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,13 +39,23 @@ class EmployeeController {
 
     // Single item
 
+//    @GetMapping("/employees/{id}")
+//    Employee one(@PathVariable Long id) {
+//
+//        return repository.findById(id)
+//                .orElseThrow(() -> new EmployeeNotFoundException(id));
+//    }
+
     @GetMapping("/employees/{id}")
-    Employee one(@PathVariable Long id) {
+    EntityModel<Employee> one(@PathVariable Long id) {
 
-        return repository.findById(id)
+        Employee employee = repository.findById(id) //
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
-    }
 
+        return EntityModel.of(employee, //
+                linkTo(methodOn(EmployeeController.class).one(id)).withSelfRel(),
+                linkTo(methodOn(EmployeeController.class).all()).withRel("employees"));
+    }
     @PutMapping("/employees/{id}")
     Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
 
